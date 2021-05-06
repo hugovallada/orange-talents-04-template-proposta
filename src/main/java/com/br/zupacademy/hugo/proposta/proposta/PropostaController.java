@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
@@ -19,6 +20,7 @@ public class PropostaController {
 
 
     @PostMapping
+    @Transactional
     public ResponseEntity<Void> cadastrarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
                                                     UriComponentsBuilder uriComponentsBuilder){
         Proposta proposta = propostaRepository.save(novaPropostaRequest.toModel());
