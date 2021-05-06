@@ -1,6 +1,7 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
 import com.br.zupacademy.hugo.proposta.util.validator.Documento;
+import com.br.zupacademy.hugo.proposta.util.validator.UniqueValue;
 import com.sun.istack.NotNull;
 
 import javax.validation.constraints.Email;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 
 public class NovaPropostaRequest {
 
+    @UniqueValue(targetClass = Proposta.class, campo = "documento")
     private @Documento String documento;
 
     private @Email @NotBlank String email;
