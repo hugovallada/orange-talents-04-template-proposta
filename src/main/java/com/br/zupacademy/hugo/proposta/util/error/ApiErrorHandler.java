@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestControllerAdvice
@@ -19,26 +21,25 @@ public class ApiErrorHandler {
     private MessageSource messageSource;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ApiErrorResponse>> handleMethodArgumentsNotValid(MethodArgumentNotValidException exception){
-        List<ApiErrorResponse> errors = new ArrayList<>();
+    public ResponseEntity<ApiErrorResponse> handleMethodArgumentsNotValid(MethodArgumentNotValidException exception){
+        List<String> errors = new ArrayList<>();
 
         exception.getBindingResult().getFieldErrors()
                 .stream().forEach(fieldError -> {
-                    errors.add(new ApiErrorResponse(
-                            fieldError.getField(),
-                            messageSource.getMessage(fieldError, LocaleContextHolder.getLocale())
-                    ));
+                    errors.add(messageSource.getMessage(fieldError, LocaleContextHolder.getLocale()));
         });
 
 
         exception.getBindingResult().getGlobalErrors()
                 .stream().forEach(globalError -> {
-                    errors.add(new ApiErrorResponse(
-                            globalError.getObjectName(),
-                            messageSource.getMessage(globalError, LocaleContextHolder.getLocale())
-                    ));
+                    errors.add(messageSource.getMessage(globalError, LocaleContextHolder.getLocale()));
         });
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiErrorResponse(errors));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiErrorResponse> handleResponseStatusException(ResponseStatusException exception){
+        return ResponseEntity.status(exception.getStatus()).body(new ApiErrorResponse(Collections.singletonList(exception.getReason())));
     }
 }

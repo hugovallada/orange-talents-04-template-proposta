@@ -1,21 +1,17 @@
 package com.br.zupacademy.hugo.proposta.util.error;
 
+import java.util.List;
+
 public class ApiErrorResponse {
 
-    private String onde;
 
-    private String mensagem;
+    private List<String> mensagens;
 
-    public ApiErrorResponse(String onde, String mensagem) {
-        this.onde = onde;
-        this.mensagem = mensagem;
+    public ApiErrorResponse(List<String> mensagens) {
+        this.mensagens = mensagens;
     }
 
-    public String getOnde() {
-        return onde;
-    }
-
-    public String getMensagem() {
-        return mensagem;
+    public List<String> getMensagens() {
+        return mensagens;
     }
 }
