@@ -1,5 +1,7 @@
 package com.br.zupacademy.hugo.proposta.util.validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ResponseStatusException;
@@ -15,6 +17,8 @@ public class UniqueValueValidation implements ConstraintValidator<UniqueValue, S
 
     private String campo;
     private Class<?> targetClass;
+
+    private Logger logger = LoggerFactory.getLogger(UniqueValueValidation.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -33,6 +37,10 @@ public class UniqueValueValidation implements ConstraintValidator<UniqueValue, S
         Assert.state(resultList.size() <= 1, "O sistema não poderia ter 2 propostas com o mesmo documento");
 
         if(resultList.size() < 1) return true;
+
+        logger.info("Houve uma tentativa de criar uma nova proposta, com um documento já cadastrado! Documento finalizado em " +
+                value.substring(value.length()-3) + " tentou criar uma nova proposta");
+
         throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Já existe uma entidade com este " + campo);
     }
 }
