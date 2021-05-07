@@ -4,7 +4,10 @@ import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaClient;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaResponse;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
+import com.br.zupacademy.hugo.proposta.util.transaction.ExecutorTransacao;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/propostas")
@@ -29,9 +30,12 @@ public class PropostaController {
     @Autowired
     private ConsultaPropostaClient consultaPropostaClient;
 
+    @Autowired
+    private ExecutorTransacao executorTransacao;
+
+    private Logger logger = LoggerFactory.getLogger(PropostaController.class);
 
     @PostMapping
-    @Transactional
     public ResponseEntity<Void> cadastrarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
                                                     UriComponentsBuilder uriComponentsBuilder){
 
@@ -40,7 +44,7 @@ public class PropostaController {
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Um problema aconteceu!Verifique o seu documento");
         }
 
-        Proposta proposta = propostaRepository.save(novaPropostaRequest.toModel());
+        Proposta proposta = executorTransacao.salvaEComita(novaPropostaRequest.toModel(), propostaRepository);
 
         ConsultaPropostaRequest consulta = new ConsultaPropostaRequest(proposta);
 
@@ -49,12 +53,11 @@ public class PropostaController {
 
             proposta.atualizarSituacao(consultaResponse.getResultadoSolicitacao());
 
-            propostaRepository.save(proposta);
-        } catch (FeignException exception){
-            if(exception.status() == 422){
-                proposta.atualizarSituacao(ResultadoSolicitacao.COM_RESTRICAO);
-                propostaRepository.save(proposta);
-            }
+            executorTransacao.salvaEComita(proposta, propostaRepository);
+        } catch (FeignException.UnprocessableEntity exception){
+            logger.info("Proposta de id " + consulta.getIdProposta() + " com documento terminado em " + consulta.getDocumento().substring(consulta.getDocumento().length() -3) + " não está elegível");
+            proposta.atualizarSituacao(ResultadoSolicitacao.COM_RESTRICAO);
+            executorTransacao.salvaEComita(proposta, propostaRepository);
         }
 
         return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
