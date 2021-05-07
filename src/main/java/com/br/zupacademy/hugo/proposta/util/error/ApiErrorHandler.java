@@ -1,5 +1,6 @@
 package com.br.zupacademy.hugo.proposta.util.error;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -41,5 +42,10 @@ public class ApiErrorHandler {
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiErrorResponse> handleResponseStatusException(ResponseStatusException exception){
         return ResponseEntity.status(exception.getStatus()).body(new ApiErrorResponse(Collections.singletonList(exception.getReason())));
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ApiErrorResponse> handleFeignException(FeignException exception){
+        return ResponseEntity.status(exception.status()).body(new ApiErrorResponse(Collections.singletonList(exception.getMessage())));
     }
 }
