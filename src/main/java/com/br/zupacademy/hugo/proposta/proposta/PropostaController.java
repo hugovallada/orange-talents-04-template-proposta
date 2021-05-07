@@ -40,12 +40,17 @@ public class PropostaController {
                                                     UriComponentsBuilder uriComponentsBuilder){
 
         if(propostaRepository.existsByDocumento(novaPropostaRequest.getDocumento())){
-            //TODO: Deveria criar uma ApiExceptionHandler genérica que faz o mesmo que a ResponseStatusException ?
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Um problema aconteceu!Verifique o seu documento");
         }
 
         Proposta proposta = executorTransacao.salvaEComita(novaPropostaRequest.toModel(), propostaRepository);
 
+        atualizarStatusProposta(proposta);
+
+        return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
+    }
+
+    private void atualizarStatusProposta(Proposta proposta) {
         ConsultaPropostaRequest consulta = new ConsultaPropostaRequest(proposta);
 
         try{
@@ -59,8 +64,6 @@ public class PropostaController {
             proposta.atualizarSituacao(ResultadoSolicitacao.COM_RESTRICAO);
             executorTransacao.salvaEComita(proposta, propostaRepository);
         }
-
-        return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
     }
 
 }
