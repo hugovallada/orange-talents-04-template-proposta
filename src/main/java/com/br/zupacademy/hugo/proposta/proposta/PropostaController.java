@@ -4,6 +4,7 @@ import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaClient;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaResponse;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
+import com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil;
 import com.br.zupacademy.hugo.proposta.util.transaction.ExecutorTransacao;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -19,6 +20,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+
+import static com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil.ofuscarDados;
 
 @RestController
 @RequestMapping("/propostas")
@@ -55,14 +58,13 @@ public class PropostaController {
 
         try{
             ConsultaPropostaResponse consultaResponse = consultaPropostaClient.solicitacao(consulta);
-
             proposta.atualizarSituacao(consultaResponse.getResultadoSolicitacao());
-
             executorTransacao.salvaEComita(proposta, propostaRepository);
+            logger.info("Proposta de id " + consulta.getIdProposta() + " com documento " + ofuscarDados(consulta.getDocumento()) + " está elegível");
         } catch (FeignException.UnprocessableEntity exception){
-            logger.info("Proposta de id " + consulta.getIdProposta() + " com documento terminado em " + consulta.getDocumento().substring(consulta.getDocumento().length() -3) + " não está elegível");
             proposta.atualizarSituacao(ResultadoSolicitacao.COM_RESTRICAO);
             executorTransacao.salvaEComita(proposta, propostaRepository);
+            logger.info("Proposta de id " + consulta.getIdProposta() + " com documento  " + ofuscarDados(consulta.getDocumento())  + " não está elegível");
         }
     }
 

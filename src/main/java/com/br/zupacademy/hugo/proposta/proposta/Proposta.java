@@ -52,6 +52,10 @@ public class Proposta {
         return nome;
     }
 
+    public Situacao getSituacao() {
+        return situacao;
+    }
+
     public void atualizarSituacao(ResultadoSolicitacao solicitacao){
         if(solicitacao == ResultadoSolicitacao.SEM_RESTRICAO){
             this.situacao = Situacao.ELEGIVEL;
@@ -59,4 +63,6 @@ public class Proposta {
             this.situacao = Situacao.NAO_ELEGIVEL;
         }
     }
+
+
 }
