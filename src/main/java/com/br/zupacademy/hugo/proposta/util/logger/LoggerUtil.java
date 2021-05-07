@@ -14,6 +14,6 @@ public class LoggerUtil {
     }
 
     private static boolean verificacaoDeChars(Character character){
-        return (character == '@' || character == '.' || character == '*');
+        return (character == '@' || character == '.' || character == '*' || character == ' ');
     }
 }
