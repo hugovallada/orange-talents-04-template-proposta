@@ -1,9 +1,8 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -22,6 +21,9 @@ public class Proposta {
     private String endereco;
 
     private BigDecimal salario;
+
+    @Enumerated(EnumType.STRING)
+    private Situacao situacao;
 
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
         this.documento = documento;
@@ -48,5 +50,13 @@ public class Proposta {
 
     public String getNome() {
         return nome;
+    }
+
+    public void atualizarSituacao(ResultadoSolicitacao solicitacao){
+        if(solicitacao == ResultadoSolicitacao.SEM_RESTRICAO){
+            this.situacao = Situacao.ELEGIVEL;
+        } else if(solicitacao == ResultadoSolicitacao.COM_RESTRICAO){
+            this.situacao = Situacao.NAO_ELEGIVEL;
+        }
     }
 }

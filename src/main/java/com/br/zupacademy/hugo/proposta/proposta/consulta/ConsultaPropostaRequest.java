@@ -19,4 +19,16 @@ public class ConsultaPropostaRequest {
         this.nome = proposta.getNome();
         this.documento = proposta.getDocumento();
     }
+
+    public Long getIdProposta() {
+        return idProposta;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
 }

@@ -1,6 +1,8 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
+import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaClient;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
+import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class PropostaController {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @Autowired
+    private ConsultaPropostaClient consultaPropostaClient;
+
 
     @PostMapping
     @Transactional
@@ -37,8 +42,11 @@ public class PropostaController {
 
         ConsultaPropostaRequest consulta = new ConsultaPropostaRequest(proposta);
 
-        // Enviar com o Feign
+        ConsultaPropostaResponse consultaResponse = consultaPropostaClient.solicitacao(consulta);
 
+        proposta.atualizarSituacao(consultaResponse.getResultadoSolicitacao());
+
+        propostaRepository.save(proposta);
 
         return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
     }
