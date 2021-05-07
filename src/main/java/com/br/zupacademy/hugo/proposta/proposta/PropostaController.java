@@ -5,7 +5,6 @@ import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaClient;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaResponse;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
-import com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil;
 import com.br.zupacademy.hugo.proposta.util.transaction.ExecutorTransacao;
 import feign.FeignException;
 import org.slf4j.Logger;
