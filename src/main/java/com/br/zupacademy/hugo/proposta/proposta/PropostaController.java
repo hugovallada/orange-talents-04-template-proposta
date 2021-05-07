@@ -1,5 +1,6 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
+import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,12 @@ public class PropostaController {
         }
 
         Proposta proposta = propostaRepository.save(novaPropostaRequest.toModel());
+
+        ConsultaPropostaRequest consulta = new ConsultaPropostaRequest(proposta);
+
+        // Enviar com o Feign
+
+
         return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
     }
 

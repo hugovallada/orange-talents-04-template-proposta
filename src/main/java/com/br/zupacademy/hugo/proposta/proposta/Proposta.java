@@ -41,4 +41,12 @@ public class Proposta {
     public Long getId() {
         return id;
     }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public String getNome() {
+        return nome;
+    }
 }
