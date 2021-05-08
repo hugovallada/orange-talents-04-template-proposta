@@ -58,6 +58,22 @@ public class Proposta {
         return situacao;
     }
 
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
     public void atualizarSituacao(ResultadoSolicitacao solicitacao){
         if(solicitacao == ResultadoSolicitacao.SEM_RESTRICAO){
             this.situacao = Situacao.ELEGIVEL;

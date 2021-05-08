@@ -53,6 +53,12 @@ public class PropostaController {
         return ResponseEntity.created(uriComponentsBuilder.path("/propostas/{id}").buildAndExpand(proposta.getId()).toUri()).build();
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<AcompanhamentoDePropostaResponse> acompanharProposta(@PathVariable Long id){
+        Proposta proposta = propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Proposta com id " + id + "não encontrada"));
+        return ResponseEntity.ok().body(new AcompanhamentoDePropostaResponse(proposta));
+    }
+
     private void atualizarStatusProposta(Proposta proposta) {
         ConsultaPropostaRequest consulta = new ConsultaPropostaRequest(proposta);
 
