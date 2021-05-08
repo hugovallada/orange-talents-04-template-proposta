@@ -25,6 +25,8 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private Situacao situacao;
 
+    private String numeroCartao;
+
     public Proposta(String documento, String email, String nome, String endereco, BigDecimal salario) {
         this.documento = documento;
         this.email = email;
@@ -62,6 +64,10 @@ public class Proposta {
         } else if(solicitacao == ResultadoSolicitacao.COM_RESTRICAO){
             this.situacao = Situacao.NAO_ELEGIVEL;
         }
+    }
+
+    public void associarNumeroDeCartao(String numeroCartao){
+        this.numeroCartao = numeroCartao;
     }
 
 
