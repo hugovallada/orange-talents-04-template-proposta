@@ -27,9 +27,9 @@ public class CartaoScheduler {
 
     private Logger logger = LoggerFactory.getLogger(CartaoScheduler.class);
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRateString = "${taxa.atualizacao.scheduler}")
     public void verificaSituacaoNoCartao(){
-        var propostasAprovadas = propostaRepository.buscarPropostasElegiveis();
+        var propostasAprovadas = propostaRepository.buscarPropostasElegiveisSemCartao();
 
         for(var proposta : propostasAprovadas){
             try{
@@ -39,7 +39,6 @@ public class CartaoScheduler {
                 logger.info("Cartão " + ofuscarDados(proposta.getDocumento()) + " associado a conta " + ofuscarDados(proposta.getDocumento()));
             }catch (FeignException exception){
                 logger.info("Uma exceção aconteceu do lado do Feign na API de Cartões");
-                 System.out.println("Cartão não encontrado");
             }
         }
 

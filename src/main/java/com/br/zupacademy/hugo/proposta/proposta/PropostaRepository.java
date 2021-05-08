@@ -12,6 +12,8 @@ import java.util.Optional;
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     boolean existsByDocumento(String documento);
 
-    @Query(value = "Select * from proposta where situacao = 'ELEGIVEL' and numero_cartao = null", nativeQuery = true)
-    List<Proposta> buscarPropostasElegiveis();
+    @Query(value = "Select * from proposta where situacao = 'ELEGIVEL' and numero_cartao is null", nativeQuery = true)
+    List<Proposta> buscarPropostasElegiveisSemCartao();
+
+
 }
