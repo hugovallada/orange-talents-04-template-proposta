@@ -143,6 +143,8 @@ services:
     environment:
       - MYSQL_DATABASE=proposta
       - MYSQL_ROOT_PASSWORD=root
+    volumes:
+    - ./mysql:/var/lib/mysql
 
   app:
     build:
