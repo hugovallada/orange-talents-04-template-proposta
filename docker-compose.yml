@@ -134,6 +134,37 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
+  mysqldb:
+    image: mysql:latest
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_DATABASE=proposta
+      - MYSQL_ROOT_PASSWORD=root
+
+  app:
+    build:
+      dockerfile: "./Dockerfile"
+      context: .
+    image: hugovallada/proposta
+    container_name: props
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "mysqldb"
+    links:
+      - mysqldb
+    restart: on-failure
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/proposta
+      - DB_URL=mysqldb
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - CONSULTA_SOLICITACAO=http://analise:9999
+      - CONSULTA_CARTAO=http://contas:8888
+
 volumes:
   grafana-volume:
   prometheus-volume:
