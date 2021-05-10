@@ -12,7 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/biometrias")
+@RequestMapping("/cartoes")
 public class BiometriaController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class BiometriaController {
     @Autowired
     private CartaoRepository cartaoRepository;
 
-    @PostMapping("cadastrar/{numeroCartao}")
+    @PostMapping("biometria/cadastrar/{numeroCartao}")
     public ResponseEntity<Void> cadastrarBiometria(
             @RequestBody @Valid NovaBiometriaRequest biometriaRequest,
             @PathVariable String numeroCartao,

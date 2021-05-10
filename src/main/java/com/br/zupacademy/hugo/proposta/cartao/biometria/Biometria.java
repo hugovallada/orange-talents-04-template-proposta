@@ -1,8 +1,8 @@
 package com.br.zupacademy.hugo.proposta.cartao.biometria;
 
 import com.br.zupacademy.hugo.proposta.cartao.Cartao;
-import com.br.zupacademy.hugo.proposta.cartao.CartaoRepository;
 import org.hibernate.annotations.CreationTimestamp;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
