@@ -12,6 +12,4 @@ public interface CartaoClient {
     @GetMapping("/api/cartoes?idProposta")
     CartaoSituacaoResponse consultaAnaliseCartao(@RequestParam Long idProposta);
 
-    @GetMapping("/api/cartoes/{idCartao}")
-    CartaoSituacaoResponse consultaDadosDoCartao(@PathVariable String idCartao);
 }

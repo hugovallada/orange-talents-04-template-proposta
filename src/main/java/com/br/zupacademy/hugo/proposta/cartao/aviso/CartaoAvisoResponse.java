@@ -18,4 +18,8 @@ public class CartaoAvisoResponse {
     public String getDestino() {
         return destino;
     }
+
+    public Aviso toModel() {
+        return new Aviso(validoAte, destino);
+    }
 }

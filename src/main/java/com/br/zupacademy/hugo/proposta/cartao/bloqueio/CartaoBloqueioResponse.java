@@ -30,4 +30,8 @@ public class CartaoBloqueioResponse {
     public boolean isAtivo() {
         return ativo;
     }
+
+    public Bloqueio toModel() {
+        return new Bloqueio(id, bloqueadoEm, sistemaResponsavel, ativo);
+    }
 }

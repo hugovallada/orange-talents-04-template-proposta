@@ -1,7 +1,7 @@
 package com.br.zupacademy.hugo.proposta.cartao.biometria;
 
 import com.br.zupacademy.hugo.proposta.cartao.CartaoClient;
-import feign.FeignException;
+import com.br.zupacademy.hugo.proposta.cartao.CartaoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,33 +12,34 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/biometria")
+@RequestMapping("/biometrias")
 public class BiometriaController {
 
     @Autowired
     private BiometriaRepository biometriaRepository;
 
     @Autowired
-    private CartaoClient cartaoClient;
+    private CartaoRepository cartaoRepository;
 
     @PostMapping("cadastrar/{numeroCartao}")
     public ResponseEntity<Void> cadastrarBiometria(
             @RequestBody @Valid NovaBiometriaRequest biometriaRequest,
             @PathVariable String numeroCartao,
             UriComponentsBuilder componentsBuilder
-            ){
+    ) {
 
-        try{
-            var cartao = cartaoClient.consultaDadosDoCartao(numeroCartao);
-            var biometria = biometriaRepository.save(biometriaRequest.toModel(numeroCartao));
+        var cartao = cartaoRepository.findById(numeroCartao);
 
-            var uri = componentsBuilder.path("/biometria/{id}").buildAndExpand(biometria.getId().toString()).toUri();
-
-            return ResponseEntity.created(uri).build();
-
-        }catch (FeignException exception){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
+        if(cartao.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado");
         }
+
+        var biometria = biometriaRepository.save(biometriaRequest.toModel(cartao.get()));
+
+        var uri = componentsBuilder.path("/biometria/{id}").buildAndExpand(biometria.getId().toString()).toUri();
+
+        return ResponseEntity.created(uri).build();
+
 
     }
 }

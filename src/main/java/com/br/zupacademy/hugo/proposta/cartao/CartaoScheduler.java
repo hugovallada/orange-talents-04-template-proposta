@@ -23,6 +23,9 @@ public class CartaoScheduler {
     private PropostaRepository propostaRepository;
 
     @Autowired
+    private CartaoRepository cartaoRepository;
+
+    @Autowired
     private ExecutorTransacao executorTransacao;
 
     private Logger logger = LoggerFactory.getLogger(CartaoScheduler.class);
@@ -36,7 +39,10 @@ public class CartaoScheduler {
                 var response = cartaoClient.consultaAnaliseCartao(proposta.getId());
                 proposta.associarNumeroDeCartao(response.getId());
                 executorTransacao.salvaEComita(proposta, propostaRepository);
-                logger.info("Cartão " + ofuscarDados(proposta.getDocumento()) + " associado a conta " + ofuscarDados(proposta.getDocumento()));
+                var cartao = response.toModel();
+                System.out.println(response);
+                executorTransacao.salvaEComita(cartao, cartaoRepository);
+                logger.info("Cartão " + ofuscarDados(proposta.getNumeroCartao()) + " associado a conta " + ofuscarDados(proposta.getDocumento()));
             }catch (FeignException exception){
                 logger.info("Uma exceção aconteceu do lado do Feign na API de Cartões");
             }

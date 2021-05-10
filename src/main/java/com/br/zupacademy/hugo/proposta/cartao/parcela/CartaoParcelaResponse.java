@@ -24,4 +24,8 @@ public class CartaoParcelaResponse {
     public BigDecimal getValor() {
         return valor;
     }
+
+    public Parcela toModel() {
+        return new Parcela(id, quantidade, valor);
+    }
 }

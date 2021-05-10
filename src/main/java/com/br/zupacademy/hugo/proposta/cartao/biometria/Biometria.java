@@ -1,11 +1,10 @@
 package com.br.zupacademy.hugo.proposta.cartao.biometria;
 
+import com.br.zupacademy.hugo.proposta.cartao.Cartao;
+import com.br.zupacademy.hugo.proposta.cartao.CartaoRepository;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -17,17 +16,18 @@ public class Biometria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String numeroCartao;
-
     @CreationTimestamp
     private LocalDateTime dataDeAssociacao;
 
     @NotBlank
     private String fingerPrint;
 
-    public Biometria(String numeroCartao, String fingerPrint) {
-        this.numeroCartao = numeroCartao;
+    @ManyToOne
+    @NotNull
+    private Cartao cartao;
+
+    public Biometria(Cartao cartao, String fingerPrint) {
+        this.cartao = cartao;
         this.fingerPrint = Base64.getEncoder().encodeToString(fingerPrint.getBytes());
     }
 

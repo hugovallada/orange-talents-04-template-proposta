@@ -30,4 +30,8 @@ public class CartaoCarteiraDigitalResponse {
     public String getEmissor() {
         return emissor;
     }
+
+    public Carteira toModel() {
+        return new Carteira(id, email, associadaEm, emissor);
+    }
 }

@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 public class ExecutorTransacao {
 
     @Transactional
-    public <T>T salvaEComita(T objeto, JpaRepository<T, Long> repository){
+    public <T>T salvaEComita(T objeto, JpaRepository<T, ?> repository){
         return (T) repository.save(objeto);
     }
 }

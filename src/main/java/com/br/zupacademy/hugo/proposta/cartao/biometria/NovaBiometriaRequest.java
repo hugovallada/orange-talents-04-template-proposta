@@ -1,5 +1,6 @@
 package com.br.zupacademy.hugo.proposta.cartao.biometria;
 
+import com.br.zupacademy.hugo.proposta.cartao.Cartao;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ public class NovaBiometriaRequest {
         this.fingerPrintLimpa = fingerPrintLimpa;
     }
 
-    public Biometria toModel(String numeroCartao){
-        return new Biometria(numeroCartao, fingerPrintLimpa);
+    public Biometria toModel(Cartao cartao){
+        return new Biometria(cartao, fingerPrintLimpa);
     }
 }
