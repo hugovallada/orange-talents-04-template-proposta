@@ -72,4 +72,23 @@ public class Cartao {
 
     public Cartao() {
     }
+
+    public boolean estaBloqueado(){
+        boolean bloqueado = false;
+
+        for(var bloqueio : bloqueios){
+            if(bloqueio.isAtivo()){
+                bloqueado = true;
+            }
+        }
+        return bloqueado;
+    }
+
+    public void associaBloqueio(Bloqueio bloqueio){
+        this.bloqueios.add(bloqueio);
+    }
+
+    public String getId() {
+        return id;
+    }
 }

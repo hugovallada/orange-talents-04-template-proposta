@@ -32,6 +32,6 @@ public class CartaoBloqueioResponse {
     }
 
     public Bloqueio toModel() {
-        return new Bloqueio(id, bloqueadoEm, sistemaResponsavel, ativo);
+        return new Bloqueio(Long.parseLong(id), bloqueadoEm, sistemaResponsavel, ativo);
     }
 }
