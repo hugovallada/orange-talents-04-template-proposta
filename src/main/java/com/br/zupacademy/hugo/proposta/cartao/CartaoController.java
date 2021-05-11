@@ -1,9 +1,10 @@
 package com.br.zupacademy.hugo.proposta.cartao;
 
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.Bloqueio;
+import com.br.zupacademy.hugo.proposta.cartao.bloqueio.BloqueioRepository;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.IdentificadorBloqueioFeign;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.ResponseBloqueioFeign;
-import com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil;
+
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
+
+import static com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil.ofuscarDados;
 
 @RestController
 @RequestMapping("/cartoes")
@@ -25,40 +29,43 @@ public class CartaoController {
     private CartaoRepository cartaoRepository;
 
     @Autowired
+    private BloqueioRepository bloqueioRepository;
+
+    @Autowired
     private CartaoClient cartaoClient;
 
     @PostMapping("/bloquear/{idCartao}")
     public ResponseEntity<Void> bloquearCartao(
             @RequestHeader("user-agent") String userAgent,
             HttpServletRequest request,
-            @PathVariable String idCartao
-            ){
+            @PathVariable @NotNull String idCartao
+    ) {
 
         Optional<Cartao> cartaoOpt = cartaoRepository.findById(idCartao);
 
-        if(cartaoOpt.isEmpty()) return ResponseEntity.notFound().build();
+        if (cartaoOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         Cartao cartao = cartaoOpt.get();
 
-        if(cartao.estaBloqueado()) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+        if (cartao.estaBloqueado()) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
         String host = request.getRemoteAddr();
-
         Bloqueio bloqueio = new Bloqueio(cartao, host, userAgent);
 
-        try{
+        try {
             ResponseBloqueioFeign response = cartaoClient.avisaSobreBloqueioCartao(cartao.getId(), new IdentificadorBloqueioFeign(bloqueio.getSistemaResponsavel()));
 
-            cartao.associaBloqueio(bloqueio);
+            bloqueioRepository.save(bloqueio);
             cartao.bloquearCartao();
             cartaoRepository.save(cartao);
-            LOG.info("O cartão " + LoggerUtil.ofuscarDados(cartao.getId()) + " foi bloqueado");
+            LOG.info("O cartão " + ofuscarDados(cartao.getId()) + " foi bloqueado");
 
-        }catch (FeignException exception){
-            System.out.println(exception.getMessage());
-            System.out.println(exception.contentUTF8());
+            return ResponseEntity.ok().build();
+
+        } catch (FeignException exception) {
             LOG.error("Algo aconteceu, não foi posssível fazer o bloqueio");
         }
-        return ResponseEntity.ok().build();
+
+        return ResponseEntity.unprocessableEntity().build();
     }
 }

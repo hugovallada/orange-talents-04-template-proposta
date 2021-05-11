@@ -1,8 +1,6 @@
 package com.br.zupacademy.hugo.proposta.cartao;
 
 import com.br.zupacademy.hugo.proposta.proposta.PropostaRepository;
-import com.br.zupacademy.hugo.proposta.proposta.Situacao;
-import com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil;
 import com.br.zupacademy.hugo.proposta.util.transaction.ExecutorTransacao;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -31,24 +29,21 @@ public class CartaoScheduler {
     private Logger logger = LoggerFactory.getLogger(CartaoScheduler.class);
 
     @Scheduled(fixedRateString = "${taxa.atualizacao.scheduler}")
-    public void verificaSituacaoNoCartao(){
+    public void verificaSituacaoNoCartao() {
         var propostasAprovadas = propostaRepository.buscarPropostasElegiveisSemCartao();
 
-        for(var proposta : propostasAprovadas){
-            try{
+        for (var proposta : propostasAprovadas) {
+            try {
                 var response = cartaoClient.consultaAnaliseCartao(proposta.getId());
                 proposta.associarNumeroDeCartao(response.getId());
                 executorTransacao.salvaEComita(proposta, propostaRepository);
                 var cartao = response.toModel();
-                System.out.println(response);
                 executorTransacao.salvaEComita(cartao, cartaoRepository);
                 logger.info("Cartão " + ofuscarDados(proposta.getNumeroCartao()) + " associado a conta " + ofuscarDados(proposta.getDocumento()));
-            }catch (FeignException exception){
+            } catch (FeignException exception) {
                 logger.info("Uma exceção aconteceu do lado do Feign na API de Cartões");
             }
         }
-
-
 
     }
 

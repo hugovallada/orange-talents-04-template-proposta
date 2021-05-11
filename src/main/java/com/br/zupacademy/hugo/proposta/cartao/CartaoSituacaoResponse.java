@@ -51,12 +51,11 @@ public class CartaoSituacaoResponse {
         this.idProposta = idProposta;
     }
 
-    public Cartao toModel(){
+    public Cartao toModel() {
         return new Cartao(
                 id,
                 emitidoEm,
                 titular,
-//                bloqueios.stream().map(CartaoBloqueioResponse::toModel).collect(Collectors.toList()),
                 avisos.stream().map(CartaoAvisoResponse::toModel).collect(Collectors.toList()),
                 carteiras.stream().map(CartaoCarteiraDigitalResponse::toModel).collect(Collectors.toList()),
                 parcelas.stream().map(CartaoParcelaResponse::toModel).collect(Collectors.toList()),

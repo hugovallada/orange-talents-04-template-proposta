@@ -2,9 +2,11 @@ package com.br.zupacademy.hugo.proposta.cartao.bloqueio;
 
 import com.br.zupacademy.hugo.proposta.cartao.Cartao;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,7 +36,7 @@ public class Bloqueio {
         this.ativo = ativo;
     }
 
-    public Bloqueio(Cartao cartao, String ipCliente, String userAgent){
+    public Bloqueio(Cartao cartao, String ipCliente, String userAgent) {
         this.cartao = cartao;
         this.ipCliente = ipCliente;
         this.userAgent = userAgent;
