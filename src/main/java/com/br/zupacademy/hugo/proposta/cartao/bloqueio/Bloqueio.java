@@ -2,6 +2,7 @@ package com.br.zupacademy.hugo.proposta.cartao.bloqueio;
 
 import com.br.zupacademy.hugo.proposta.cartao.Cartao;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Bloqueio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @CreationTimestamp
@@ -38,6 +39,7 @@ public class Bloqueio {
         this.ipCliente = ipCliente;
         this.userAgent = userAgent;
         this.ativo = true;
+        this.sistemaResponsavel = "Sistema de Proposta";
     }
 
 
@@ -50,5 +52,9 @@ public class Bloqueio {
 
     public boolean isAtivo() {
         return ativo;
+    }
+
+    public String getSistemaResponsavel() {
+        return sistemaResponsavel;
     }
 }

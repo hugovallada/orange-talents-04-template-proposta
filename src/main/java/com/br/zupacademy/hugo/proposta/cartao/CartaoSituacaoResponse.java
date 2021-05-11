@@ -56,7 +56,7 @@ public class CartaoSituacaoResponse {
                 id,
                 emitidoEm,
                 titular,
-                bloqueios.stream().map(CartaoBloqueioResponse::toModel).collect(Collectors.toList()),
+//                bloqueios.stream().map(CartaoBloqueioResponse::toModel).collect(Collectors.toList()),
                 avisos.stream().map(CartaoAvisoResponse::toModel).collect(Collectors.toList()),
                 carteiras.stream().map(CartaoCarteiraDigitalResponse::toModel).collect(Collectors.toList()),
                 parcelas.stream().map(CartaoParcelaResponse::toModel).collect(Collectors.toList()),

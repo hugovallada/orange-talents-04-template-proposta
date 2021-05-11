@@ -5,6 +5,7 @@ import com.br.zupacademy.hugo.proposta.cartao.aviso.CartaoAvisoResponse;
 import com.br.zupacademy.hugo.proposta.cartao.biometria.Biometria;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.Bloqueio;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.CartaoBloqueioResponse;
+import com.br.zupacademy.hugo.proposta.cartao.bloqueio.StatusCartao;
 import com.br.zupacademy.hugo.proposta.cartao.carteira.CartaoCarteiraDigitalResponse;
 import com.br.zupacademy.hugo.proposta.cartao.carteira.Carteira;
 import com.br.zupacademy.hugo.proposta.cartao.parcela.CartaoParcelaResponse;
@@ -56,11 +57,27 @@ public class Cartao {
 
     private Long idProposta;
 
-    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
+    @Enumerated(EnumType.STRING)
+    private StatusCartao estado = StatusCartao.ATIVO;
+
+//    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Bloqueio> bloqueios, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
+//        this.id = id;
+//        this.emitidoEm = emitidoEm;
+//        this.titular = titular;
+//        this.bloqueios = bloqueios;
+//        this.avisos = avisos;
+//        this.carteiras = carteiras;
+//        this.parcelas = parcelas;
+//        this.limite = limite;
+//        this.renegociacao = renegociacao;
+//        this.vencimento = vencimento;
+//        this.idProposta = idProposta;
+//    }
+
+    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
         this.id = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
-        this.bloqueios = bloqueios;
         this.avisos = avisos;
         this.carteiras = carteiras;
         this.parcelas = parcelas;
@@ -74,14 +91,7 @@ public class Cartao {
     }
 
     public boolean estaBloqueado(){
-        boolean bloqueado = false;
-
-        for(var bloqueio : bloqueios){
-            if(bloqueio.isAtivo()){
-                bloqueado = true;
-            }
-        }
-        return bloqueado;
+        return estado == StatusCartao.BLOQUEADO;
     }
 
     public void associaBloqueio(Bloqueio bloqueio){
@@ -90,5 +100,9 @@ public class Cartao {
 
     public String getId() {
         return id;
+    }
+
+    public void bloquearCartao(){
+        this.estado = StatusCartao.BLOQUEADO;
     }
 }
