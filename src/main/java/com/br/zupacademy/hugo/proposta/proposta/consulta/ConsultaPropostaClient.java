@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface ConsultaPropostaClient {
 
     @PostMapping("/api/solicitacao")
-    public ConsultaPropostaResponse solicitacao(ConsultaPropostaRequest consultaPropostaRequest);
+    ConsultaPropostaResponse solicitacao(ConsultaPropostaRequest consultaPropostaRequest);
 }
