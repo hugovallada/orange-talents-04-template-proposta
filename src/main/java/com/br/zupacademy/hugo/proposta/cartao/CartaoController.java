@@ -31,11 +31,11 @@ public class CartaoController {
 
         Optional<Cartao> cartaoOpt = cartaoRepository.findById(idCartao);
 
-        if(cartaoOpt.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado");
+        if(cartaoOpt.isEmpty()) return ResponseEntity.notFound().build();
 
         Cartao cartao = cartaoOpt.get();
 
-        if(cartao.estaBloqueado()) throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "O cartão já está bloqueado");
+        if(cartao.estaBloqueado()) return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
 
         String host = request.getRemoteAddr();
 
