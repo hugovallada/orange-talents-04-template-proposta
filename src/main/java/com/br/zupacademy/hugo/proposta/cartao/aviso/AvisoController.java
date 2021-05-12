@@ -34,7 +34,7 @@ public class AvisoController {
                                                    @RequestBody @Valid NovoAvisoRequest avisoRequest){
 
         Cartao cartao = cartaoRepository.findById(idCartao).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado"));
-
+        // TODO: Devo fazer a verificação se o cartão está bloqueado ?
         String ipClient = request.getRemoteAddr();
 
         Aviso aviso = avisoRequest.toModel(cartao, userAgent, ipClient);
