@@ -51,11 +51,23 @@ public class Cartao {
     @Enumerated(EnumType.STRING)
     private StatusCartao estado = StatusCartao.ATIVO;
 
-    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
+//    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Aviso> avisos, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
+//        this.id = id;
+//        this.emitidoEm = emitidoEm;
+//        this.titular = titular;
+//        this.avisos = avisos;
+//        this.carteiras = carteiras;
+//        this.parcelas = parcelas;
+//        this.limite = limite;
+//        this.renegociacao = renegociacao;
+//        this.vencimento = vencimento;
+//        this.idProposta = idProposta;
+//    }
+
+        public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
         this.id = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
-        this.avisos = avisos;
         this.carteiras = carteiras;
         this.parcelas = parcelas;
         this.limite = limite;
@@ -63,6 +75,8 @@ public class Cartao {
         this.vencimento = vencimento;
         this.idProposta = idProposta;
     }
+
+
 
     public Cartao() {
     }

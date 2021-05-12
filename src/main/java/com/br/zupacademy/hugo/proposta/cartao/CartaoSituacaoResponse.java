@@ -56,7 +56,6 @@ public class CartaoSituacaoResponse {
                 id,
                 emitidoEm,
                 titular,
-                avisos.stream().map(CartaoAvisoResponse::toModel).collect(Collectors.toList()),
                 carteiras.stream().map(CartaoCarteiraDigitalResponse::toModel).collect(Collectors.toList()),
                 parcelas.stream().map(CartaoParcelaResponse::toModel).collect(Collectors.toList()),
                 limite,

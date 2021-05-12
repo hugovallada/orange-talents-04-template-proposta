@@ -19,7 +19,4 @@ public class CartaoAvisoResponse {
         return destino;
     }
 
-    public Aviso toModel() {
-        return new Aviso(validoAte, destino);
-    }
 }
