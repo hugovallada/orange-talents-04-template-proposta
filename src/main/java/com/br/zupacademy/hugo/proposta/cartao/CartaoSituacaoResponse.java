@@ -56,8 +56,6 @@ public class CartaoSituacaoResponse {
                 id,
                 emitidoEm,
                 titular,
-                carteiras.stream().map(CartaoCarteiraDigitalResponse::toModel).collect(Collectors.toList()),
-                parcelas.stream().map(CartaoParcelaResponse::toModel).collect(Collectors.toList()),
                 limite,
                 renegociacao,
                 vencimento.toModel(),

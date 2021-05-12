@@ -25,12 +25,6 @@ public class Cartao {
 
     private String titular;
 
-    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
-    private List<Carteira> carteiras = new ArrayList<>();
-
-    @OneToMany(mappedBy = "cartao", cascade = CascadeType.MERGE)
-    private List<Parcela> parcelas = new ArrayList<>();
-
     private BigDecimal limite;
 
     @ManyToOne(cascade = CascadeType.MERGE)
@@ -47,12 +41,10 @@ public class Cartao {
     @Enumerated(EnumType.STRING)
     private StatusCartao estado = StatusCartao.ATIVO;
 
-    public Cartao(String id, LocalDateTime emitidoEm, String titular, List<Carteira> carteiras, List<Parcela> parcelas, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
+    public Cartao(String id, LocalDateTime emitidoEm, String titular, BigDecimal limite, Renegociacao renegociacao, Vencimento vencimento, Long idProposta) {
         this.id = id;
         this.emitidoEm = emitidoEm;
         this.titular = titular;
-        this.carteiras = carteiras;
-        this.parcelas = parcelas;
         this.limite = limite;
         this.renegociacao = renegociacao;
         this.vencimento = vencimento;
@@ -60,6 +52,10 @@ public class Cartao {
     }
 
 
+    /**
+     * @deprecated Construtor de uso exclusivo da JPA
+     */
+    @Deprecated
     public Cartao() {
     }
 

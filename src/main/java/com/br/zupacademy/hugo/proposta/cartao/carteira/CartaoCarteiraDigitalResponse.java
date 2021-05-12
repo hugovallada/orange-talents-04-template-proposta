@@ -31,7 +31,5 @@ public class CartaoCarteiraDigitalResponse {
         return emissor;
     }
 
-    public Carteira toModel() {
-        return new Carteira(id, email, associadaEm, emissor);
-    }
+
 }
