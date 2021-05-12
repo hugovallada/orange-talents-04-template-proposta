@@ -1,5 +1,7 @@
 package com.br.zupacademy.hugo.proposta.cartao;
 
+import com.br.zupacademy.hugo.proposta.cartao.aviso.NovoAvisoRequest;
+import com.br.zupacademy.hugo.proposta.cartao.aviso.NovoAvisoRequestFeign;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.IdentificadorBloqueioFeign;
 import com.br.zupacademy.hugo.proposta.cartao.bloqueio.ResponseBloqueioFeign;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -14,4 +16,6 @@ public interface CartaoClient {
     @PostMapping("/api/cartoes/{idCartao}/bloqueios")
     ResponseBloqueioFeign avisaSobreBloqueioCartao(@PathVariable String idCartao, @RequestBody IdentificadorBloqueioFeign sistemaResponsavel);
 
+    @PostMapping("/api/cartoes/{idCartao}/avisos")
+    String avisarSobreViagem(@PathVariable String idCartao, @RequestBody NovoAvisoRequestFeign avisoRequest);
 }
