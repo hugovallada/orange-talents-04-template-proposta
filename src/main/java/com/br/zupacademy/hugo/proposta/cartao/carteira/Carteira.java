@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
 public class Carteira {
     @Id
     private String id;
+
     private String email;
-    @CreationTimestamp
-    private LocalDateTime associadaEm;
 
     @Enumerated(EnumType.STRING)
     private TipoDeCarteira emissor;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CarteiraRepository extends JpaRepository<Carteira, Long> {
+public interface CarteiraRepository extends JpaRepository<Carteira, String> {
 
     Optional<Carteira> findByEmissorAndCartaoId(TipoDeCarteira emissor, String cartaoId);
 }

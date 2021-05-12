@@ -30,6 +30,8 @@ public class CarteiraController {
     public ResponseEntity<Void> associarCarteira(@PathVariable String idCartao, @RequestBody @Valid NovaCarteiraRequest carteiraRequest, UriComponentsBuilder uriComponentsBuilder){
         var cartao = cartaoRepository.findById(idCartao).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"O cartão não foi encontrado"));
 
+        if(cartao.estaBloqueado()) throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Não é possível associar um cartão bloqueado");
+
         // Verifica se o cartão já está associado a esse emissor de carteira
         if(carteiraRepository.findByEmissorAndCartaoId(carteiraRequest.getEmissor(), idCartao).isPresent()){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Esse cartão já está associado a uma carteira desse tipo");
