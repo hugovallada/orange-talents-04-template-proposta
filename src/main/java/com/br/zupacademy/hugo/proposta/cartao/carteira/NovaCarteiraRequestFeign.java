@@ -1,9 +1,12 @@
 package com.br.zupacademy.hugo.proposta.cartao.carteira;
 
-public class NovaCarteiraRequestFeign {
-    private String email;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
-    private String carteira;
+public class NovaCarteiraRequestFeign {
+    private @NotBlank @Email String email;
+
+    private @NotBlank String carteira;
 
     public NovaCarteiraRequestFeign(String email, String carteira) {
         this.email = email;

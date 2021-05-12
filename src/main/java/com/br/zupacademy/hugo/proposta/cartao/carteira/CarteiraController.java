@@ -2,7 +2,10 @@ package com.br.zupacademy.hugo.proposta.cartao.carteira;
 
 import com.br.zupacademy.hugo.proposta.cartao.CartaoClient;
 import com.br.zupacademy.hugo.proposta.cartao.CartaoRepository;
+import com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,8 @@ public class CarteiraController {
 
     @Autowired
     private CartaoClient cartaoClient;
+
+    private static final Logger LOG = LoggerFactory.getLogger(CarteiraController.class);
 
     @PostMapping("/{idCartao}/carteiras")
     public ResponseEntity<Void> associarCarteira(@PathVariable String idCartao, @RequestBody @Valid NovaCarteiraRequest carteiraRequest, UriComponentsBuilder uriComponentsBuilder){
@@ -49,6 +54,7 @@ public class CarteiraController {
                 var uri = uriComponentsBuilder.path("/cartoes/carteiras/{idCarteira}")
                         .buildAndExpand(carteira.getId()).toUri();
 
+                LOG.info("Cartão " + LoggerUtil.ofuscarDados(cartao.getId()) + " foi associado ao " + carteiraRequest.getEmissor().toString());
                 return ResponseEntity.created(uri).build();
             }
 
