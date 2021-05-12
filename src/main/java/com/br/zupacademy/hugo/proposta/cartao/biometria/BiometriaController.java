@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/cartoes")
@@ -30,12 +31,12 @@ public class BiometriaController {
 
         var cartao = cartaoRepository.findById(numeroCartao);
 
+
         if(cartao.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não encontrado");
         }
 
         var biometria = biometriaRepository.save(biometriaRequest.toModel(cartao.get()));
-
         var uri = componentsBuilder.path("/biometria/{id}").buildAndExpand(biometria.getId().toString()).toUri();
 
         return ResponseEntity.created(uri).build();

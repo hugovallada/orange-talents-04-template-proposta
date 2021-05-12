@@ -26,9 +26,9 @@ public class Biometria {
     @NotNull
     private Cartao cartao;
 
-    public Biometria(Cartao cartao, String fingerPrint) {
+    public Biometria(Cartao cartao, byte[] fingerPrint) {
         this.cartao = cartao;
-        this.fingerPrint = Base64.getEncoder().encodeToString(fingerPrint.getBytes());
+        this.fingerPrint = new String(fingerPrint);
     }
 
     /**
@@ -40,5 +40,9 @@ public class Biometria {
 
     public Long getId() {
         return id;
+    }
+
+    public String getFingerPrint() {
+        return fingerPrint;
     }
 }
