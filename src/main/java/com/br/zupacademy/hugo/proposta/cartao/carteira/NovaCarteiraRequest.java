@@ -17,8 +17,12 @@ public class NovaCarteiraRequest {
         this.emissor = emissor;
     }
 
-    public Carteira toModel(Cartao cartao){
-        return new Carteira(email, emissor, cartao);
+    public Carteira toModel(String id, Cartao cartao){
+        return new Carteira(id,email, emissor, cartao);
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public TipoDeCarteira getEmissor() {

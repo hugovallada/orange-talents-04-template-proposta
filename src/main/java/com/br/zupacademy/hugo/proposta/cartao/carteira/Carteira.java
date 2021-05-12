@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Carteira {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String email;
     @CreationTimestamp
     private LocalDateTime associadaEm;
@@ -21,7 +20,8 @@ public class Carteira {
     @ManyToOne
     private Cartao cartao;
 
-    public Carteira( String email, TipoDeCarteira emissor, Cartao cartao) {
+    public Carteira(String id, String email, TipoDeCarteira emissor, Cartao cartao) {
+        this.id = id;
         this.email = email;
         this.emissor = emissor;
         this.cartao = cartao;
@@ -36,5 +36,9 @@ public class Carteira {
 
     public TipoDeCarteira getEmissor() {
         return emissor;
+    }
+
+    public String getId() {
+        return id;
     }
 }
