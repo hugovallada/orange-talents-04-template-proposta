@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@Profile("dev")
+//@Profile("dev")
 public class DevSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -17,6 +17,7 @@ public class DevSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/propostas").permitAll()
                 .antMatchers(HttpMethod.POST,"/cartoes/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/actuator/**").permitAll()
                 .anyRequest().authenticated();
 
     }
