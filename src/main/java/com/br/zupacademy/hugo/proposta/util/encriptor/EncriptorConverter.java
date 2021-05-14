@@ -12,7 +12,11 @@ import javax.persistence.Converter;
 @Converter
 public class EncriptorConverter implements AttributeConverter<String, String> {
 
-    TextEncryptor encryptor = Encryptors.text("essasenhaefraca","faca3214");
+    TextEncryptor encryptor;
+
+    public EncriptorConverter(@Value("${password.encryptor}") String pass, @Value("${salt.encryptor}") String salt){
+        encryptor = Encryptors.text(pass, salt);
+    }
 
     @Override
     public String convertToDatabaseColumn(String attribute) {
