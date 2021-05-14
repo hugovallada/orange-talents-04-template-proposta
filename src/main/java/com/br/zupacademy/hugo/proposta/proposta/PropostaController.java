@@ -5,6 +5,7 @@ import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaClient;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaRequest;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ConsultaPropostaResponse;
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
+import com.br.zupacademy.hugo.proposta.util.encriptor.EncriptorConverter;
 import com.br.zupacademy.hugo.proposta.util.transaction.ExecutorTransacao;
 import feign.FeignException;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+
+import java.util.stream.Collectors;
 
 import static com.br.zupacademy.hugo.proposta.util.logger.LoggerUtil.ofuscarDados;
 
@@ -42,7 +45,7 @@ public class PropostaController {
     public ResponseEntity<Void> cadastrarProposta(@RequestBody @Valid NovaPropostaRequest novaPropostaRequest,
                                                     UriComponentsBuilder uriComponentsBuilder){
 
-        if(propostaRepository.existsByDocumento(novaPropostaRequest.getDocumento())){
+        if(documentoDuplicado(novaPropostaRequest.getDocumento())){
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Um problema aconteceu!Verifique o seu documento");
         }
 
@@ -72,6 +75,20 @@ public class PropostaController {
             executorTransacao.salvaEComita(proposta, propostaRepository);
             logger.info("Proposta de id " + consulta.getIdProposta() + " com documento  " + ofuscarDados(consulta.getDocumento())  + " não está elegível");
         }
+    }
+
+    /**
+     * Método criado para realizar a validação de documento único.
+     * O método foi criado, para ser possível validar se o documento é único ao mesmo tempo que salva os dados criptografados no banco
+     *
+     * @param documento recebido no corpo da requisição
+     * @return verifica se a lista buscada no banco possui um ou mais elementos
+     */
+    private boolean documentoDuplicado(String documento){
+        return propostaRepository.findAll()
+                .stream().filter(proposta -> proposta.getDocumento().equals(documento))
+                .collect(Collectors.toList())
+                .size() >= 1;
     }
 
 }

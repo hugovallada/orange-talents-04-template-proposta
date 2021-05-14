@@ -1,6 +1,10 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
 import com.br.zupacademy.hugo.proposta.proposta.consulta.ResultadoSolicitacao;
+import com.br.zupacademy.hugo.proposta.util.encriptor.EncriptorConverter;
+import com.br.zupacademy.hugo.proposta.util.validator.Documento;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,6 +16,7 @@ public class Proposta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Convert(converter = EncriptorConverter.class)
     private String documento;
 
     private String email;
@@ -85,6 +90,5 @@ public class Proposta {
     public void associarNumeroDeCartao(String numeroCartao){
         this.numeroCartao = numeroCartao;
     }
-
 
 }

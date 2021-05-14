@@ -1,9 +1,11 @@
 package com.br.zupacademy.hugo.proposta.proposta;
 
+import com.br.zupacademy.hugo.proposta.util.encriptor.EncriptorConverter;
 import com.br.zupacademy.hugo.proposta.util.validator.Documento;
 import com.br.zupacademy.hugo.proposta.util.validator.UniqueValue;
 import com.sun.istack.NotNull;
 
+import javax.persistence.Convert;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
