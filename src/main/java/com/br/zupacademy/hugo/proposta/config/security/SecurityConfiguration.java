@@ -6,7 +6,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 
-//@Configuration
+@Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -17,7 +17,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         .antMatchers(HttpMethod.GET,"/cartoes/**").hasAuthority("SCOPE-cartoes:read")
                         .antMatchers(HttpMethod.POST,"/cartoes/**").hasAuthority("SCOPE_cartoes:write")
                         .antMatchers(HttpMethod.POST, "/propostas/**").hasAuthority("SCOPE_proposta:write")
-                        .antMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("SCOPE_infra:read")
+                        //.antMatchers(HttpMethod.GET, "/actuator/**").hasAuthority("SCOPE_infra:read")
+                        .antMatchers(HttpMethod.GET, "/actuator/prometheus").permitAll()
                         .anyRequest().authenticated()
         )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

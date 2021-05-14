@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-//@Profile("dev")
+@Profile("dev")
 public class DevSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
